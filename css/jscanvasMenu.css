@@ -1,0 +1,211 @@
+.leftSideMenu {
+    height: 100%;
+    width: 10px;
+    margin-left: 0px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #EEEEEE;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.leftSideMenu a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+        display: block;
+    transition: 0.3s
+}
+
+.leftSideMenu a:hover,
+ .offcanvas a:focus{
+    /*color: #f1f1f1;*/
+    color: #5DADE2;
+}
+.leftSideMenu .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.rightSideMenu {
+    height: 100%;
+    width: 5px;
+    margin-right: 0px;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    background-color: #EEEEEE;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+.rightSideMenu a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s
+}
+
+.rightSideMenu a:hover, .offcanvas a:focus{
+    color: #5B9BD5;
+}
+
+.rightSideMenu .closebtn {
+    position: absolute;
+    top: 0;
+    right: 2vh;
+    font-size: 36px;
+    margin-left: 50px;
+}
+.menu0_opener {
+    background: #EEEEEE;
+    width: 100%;
+    height: 7%;
+    /*position: absolute;*/
+    margin-top: 2500%;
+    opacity: 0.8;
+    /*vertical-align: text-bottom;*/
+    align: right;
+    float: right;
+}
+.menu0_opener:hover {
+    opacity: 1;
+    cursor: pointer;
+}
+.mainCAD {
+    transition: margin-left .5s;
+    padding: 16px;
+}
+.rectObjectList , .animationObjectList, .rightSideMenu .buttonList {
+    display: table;
+}
+.rectObjectList img{
+    padding-top: 1%;
+    width: 20%;
+    height: 20%;
+    text-align: left;
+}
+.animationObjectList img {
+    padding-top: 1%;
+    width: 20%;
+    height: 20%;    
+    text-align: left;
+}
+.rightSideMenu .buttonList img{
+    padding-top: 1%;
+    width: 20%;
+    height: 20%;
+    text-align: left;
+}
+.import-section {
+    display: block;
+    position: absolute;
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+#importer {
+    width: 100%;
+    padding: 6px;
+    /*color: #DDDDDD;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    /*transition-duration: 0.4s;   */
+	/*opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;    */  
+}
+.inputfile {
+    width: 100%;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.inputfile+label {
+    cursor: pointer;
+    font-size: 1.25em;
+    font-weight: 700;
+    color: black;
+    background-color: #EEEEEE;
+    display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile+label:hover {
+    background-color: #5B9BD5;
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+@media screen and (max-height: 450px) {
+    .leftSideMenu, .rightSideMenu {
+        padding-top: 15px;
+    }
+    .leftSideMenu a,.rightSideMenu a {
+        font-size: 18px;
+    }
+}
+.imgRectObj, .imgAnimateObj{
+    cursor: pointer;
+    /*border-radius: 10px;*/
+    margin: 1vh;
+    width:  10vh;
+    height: 10vh;    
+    -moz-box-shadow: 0 0 5px #fff;
+    -webkit-box-shadow: 0 0 5px #fff;
+    box-shadow: 0px 0px 5px #fff;
+}
+.rButton {
+    cursor: pointer;
+    border-radius: 10px;
+    margin: 1vh;
+    width:  6vh;
+    height: 6vh;    
+    -moz-box-shadow: 0 0 5px #fff;
+    -webkit-box-shadow: 0 0 5px #fff;
+    box-shadow: 0px 0px 5px #fff;    
+}
+/*.imgRectObj:hover, .imgAnimateObj:hover, .rButton:hover {
+    -moz-box-shadow: 0 0 25px #fff;
+    -webkit-box-shadow: 0 0 25px #fff;
+    box-shadow: 0px 0px 25px #fff;       
+}*/
+.card-container {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 15%;
+    border-radius: 5px;
+    float: left;
+}
+
+.card-container:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);    
+}
+.card-container img {
+    position: absolute;
+    width:1%;
+    height:1%;
+    float: right;
+    margin-right: 0px;
+    margin-left: 11%;
+    font-size: 26px;
+}
+
+.card-container img:hover {
+    color: #5B9BD5;
+    cursor: pointer;
+    z-index: 2;
+}
+.card-container input {
+    max-width: 100%;
+}
