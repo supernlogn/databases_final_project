@@ -10,12 +10,20 @@
  */
 function jsonToHtmlTable(jsonString, container) {
 
+<<<<<<< HEAD
     let jsonObject = JSON.stringify(jsonString); 
     let objectRows = jsonObject.tableData; 
     let el = objectRows[0];
     let htmlTableWrapper = document.createElement('div');
         htmlTableWrapper.class = "table-responsive";
         
+=======
+    let obj = JSON.stringify(jsonString);
+    let el = obj[0];
+    let htmlTableWrapper = document.createElement('div');
+        htmlTableWrapper.class = "table-responsive";
+
+>>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
     let htmlTable = document.createElement('table');
         htmlTable.class = "table table-bordered table-hover table-striped";
         htmlTableWrapper.appendChild(htmlTable);
@@ -34,7 +42,11 @@ function jsonToHtmlTable(jsonString, container) {
     let body = document.createElement('tbody');
     htmlTable.appendChild(body);
     
+<<<<<<< HEAD
     for(let el of objectRows) {
+=======
+    for(let el of obj) {
+>>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
         let tr = document.createElement('tr');
         body.appendChild(tr);
         let trInnerHTML = [];
@@ -47,6 +59,7 @@ function jsonToHtmlTable(jsonString, container) {
     let divWrapper  = document.createElement('div');
         divWrapper.class="col-lg-4";
         divWrapper.appendChild(htmlTableWrapper);
+<<<<<<< HEAD
         divWrapper.name = 
     container.appendChild(divWrapper);
 }
@@ -124,3 +137,8 @@ function fetchTableNames() {
         }
     );
 }
+=======
+
+    container.appendChild(divWrapper);
+}
+>>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
