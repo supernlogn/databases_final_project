@@ -71,7 +71,9 @@ function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
             }).done(function() {
                 $.get({
                     url: "serverApplication.php",  //server script to process data
-                    {tablename:, rowData:rowData},
+                    requestData: "tableData",
+                    tablename: bootstrapTable.name,
+                    rowData:rowData,
                     cache: false
                 })
                 
@@ -95,7 +97,7 @@ function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
     
 }
 
-function appendTable(tableName, container) {
+function appendTable(container, tableName) {
     $.get(
         "serverApplication.php",
         {tableName : tableName},
@@ -103,4 +105,22 @@ function appendTable(tableName, container) {
             jsonToHtmlTable(data, container);
         }.bind(this)
     ).done();
+}
+
+
+function fetchTableNames() {
+    $.get(
+        "serverApplication.php",  //server script to process data
+        {requestData: "tableNames"},
+        function(data) {
+            let tableDropDownMenu = document.getElementById("TableDropDownMenu1");
+            console.log("this is data:" + data);
+            for(let tableName of data.tableNames ) {
+                let li = document.createElement('li');
+                li.innerHTML = tableName;
+                li.onclick = appendTable.bind(document.getElementById("page-wrapper"), li.innerHTML); 
+                tableDropDownMenu.appendElement(li);
+            }
+        }
+    );
 }
