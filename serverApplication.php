@@ -1,14 +1,20 @@
 <?php
 
 function getJSONTableNames() {
-    $a = array('name1','name2');
-    
-    return json_encode($a);
+    $allObjectsJSON = file_get_contents("tableNames.json");
+    return $allObjectsJSON;
+}
+function getJSONTableExample() {
+    $allObjectsJSON = file_get_contents("example.json");
+    return $allObjectsJSON;
 }
 try {    
-    switch (htmlspecialchars($_GET["requestData"])) {
+    switch (htmlspecialchars($_GET["tableName"])) {
         case 'tableNames':
             echo getJSONTableNames(); //send json file containing the table names
+            break;
+        case 'example':
+            echo getJSONTableExample();
             break;
         default:
             echo "default";

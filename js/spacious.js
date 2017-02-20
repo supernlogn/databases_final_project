@@ -10,58 +10,61 @@
  */
 function jsonToHtmlTable(jsonString, container) {
 
-<<<<<<< HEAD
-    let jsonObject = JSON.stringify(jsonString); 
-    let objectRows = jsonObject.tableData; 
-    let el = objectRows[0];
-    let htmlTableWrapper = document.createElement('div');
-        htmlTableWrapper.class = "table-responsive";
-        
-=======
-    let obj = JSON.stringify(jsonString);
-    let el = obj[0];
-    let htmlTableWrapper = document.createElement('div');
-        htmlTableWrapper.class = "table-responsive";
+    let jsonObject = JSON.parse(jsonString);
+    let objectRows = jsonObject.tableData;
 
->>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
+    let el = objectRows[0];
+
+    let htmlTableWrapper = document.createElement('div');
+        htmlTableWrapper.className = "table-responsive";
+
     let htmlTable = document.createElement('table');
-        htmlTable.class = "table table-bordered table-hover table-striped";
+        htmlTable.className = "table table-bordered table-hover table-striped";
         htmlTableWrapper.appendChild(htmlTable);
 
-    let titleThread = document.createElement('thread');
-        titleThread.appendChild(document.createElement('tr'));
-        htmlTable.appendChild(titleThread);
+    let titleThead = document.createElement('thead');
+    let headerTr = document.createElement('tr');
+        titleThead.appendChild(headerTr);
+        htmlTable.appendChild(titleThead);
     let th;
+    
+    th = document.createElement('th');
+    th.innerHTML = '#';
+    headerTr.appendChild(th);
 
     for(let property in el) {
         th = document.createElement('th');
         th.innerHTML = '' + property;
-        titleThread.firstChild.appendChild(th);
+        headerTr.appendChild(th);
     }
-    
+    console.log(headerTr.innerHTML);
+
     let body = document.createElement('tbody');
     htmlTable.appendChild(body);
     
-<<<<<<< HEAD
-    for(let el of objectRows) {
-=======
-    for(let el of obj) {
->>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
+    i = 0;
+    for(let element of objectRows) {
         let tr = document.createElement('tr');
         body.appendChild(tr);
-        let trInnerHTML = [];
-        for(let val of el) {
-            trInnerHTML.push('<td>'+val+'</td');
+        console.log(element)
+        th = document.createElement('th');
+        th.scope = "row";
+        th.innerHTML = i++;
+        tr.appendChild(th);
+        for(let val in element) {
+            let td = document.createElement('td');
+            td.innerHTML = element[val];
+            tr.appendChild(td);
         }
-        tr.innerHTML = trInnerHTML.join('');
+        // tr.innerHTML = trInnerHTML.join('');
     }
 
     let divWrapper  = document.createElement('div');
         divWrapper.class="col-lg-4";
         divWrapper.appendChild(htmlTableWrapper);
-<<<<<<< HEAD
-        divWrapper.name = 
-    container.appendChild(divWrapper);
+
+        divWrapper.name = jsonObject.tableName;
+        container.appendChild(divWrapper);
 }
 
 function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
@@ -111,12 +114,13 @@ function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
 }
 
 function appendTable(container, tableName) {
+    console.log("called");
     $.get(
         "serverApplication.php",
         {tableName : tableName},
         function(data) {
             jsonToHtmlTable(data, container);
-        }.bind(this)
+        }
     ).done();
 }
 
@@ -124,21 +128,17 @@ function appendTable(container, tableName) {
 function fetchTableNames() {
     $.get(
         "serverApplication.php",  //server script to process data
-        {requestData: "tableNames"},
-        function(data) {
+        {tableName: "tableNames"},
+        function(stringData) {
             let tableDropDownMenu = document.getElementById("TableDropDownMenu1");
-            console.log("this is data:" + data);
-            for(let tableName of data.tableNames ) {
+            console.log("this is data:" + stringData);
+            let data = JSON.parse(stringData);
+            for(let tableName of data.tableData ) {
                 let li = document.createElement('li');
                 li.innerHTML = tableName;
                 li.onclick = appendTable.bind(document.getElementById("page-wrapper"), li.innerHTML); 
-                tableDropDownMenu.appendElement(li);
+                tableDropDownMenu.appendChild(li);
             }
         }
     );
 }
-=======
-
-    container.appendChild(divWrapper);
-}
->>>>>>> aa99b8c9097c487ab94b732bf3c0783d592fdceb
