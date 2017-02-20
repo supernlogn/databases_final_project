@@ -1,5 +1,3 @@
-
-
 /**
  * 
  * 
@@ -10,6 +8,7 @@
  */
 function jsonToHtmlTable(jsonString, container) {
 
+<<<<<<< HEAD
     let jsonObject = JSON.parse(jsonString);
     let objectRows = jsonObject.tableData;
 
@@ -57,7 +56,8 @@ function jsonToHtmlTable(jsonString, container) {
             tr.appendChild(td);
         }
         // tr.innerHTML = trInnerHTML.join('');
-    }
+   }
+
 
     let divWrapper  = document.createElement('div');
         divWrapper.class="col-lg-4";
@@ -68,49 +68,49 @@ function jsonToHtmlTable(jsonString, container) {
 }
 
 function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
-    // let tds = htmlRow.getElementsByTagName('td');
-    // for( td in tds) {
-    //     tds[td] = tds[td].innerHTML;
-    // }
-    if(allowDelete) {
-        // add an event to POST deletion data at change
-        changeHandler = function(rowData, $element) {
-            // rowData: the record corresponding to the clicked row, 
-            // $element: the tr element.
-            $.post( {
-                url: "serverApplication.php",  //server script to process data
-                data: {rowData:rowData},
-                callback: function() {
-                    console.log("sucessfull post of table data");
-                }.bind($elemeDatant),
-                cache: false
-            }).done(function() {
-                $.get({
-                    url: "serverApplication.php",  //server script to process data
-                    requestData: "tableData",
-                    tablename: bootstrapTable.name,
-                    rowData:rowData,
-                    cache: false
-                })
-                
-                let tds = $element.getElementsByTagName('td');
-                for(i in tds) {
-                    tds[i].innerHTML = "1";
-                }
-            }.bind(htmlRow));
-        };
-        // and then get data, to update the field at the viewer's side.
-    }
+  // let tds = htmlRow.getElementsByTagName('td');
+  // for( td in tds) {
+  //     tds[td] = tds[td].innerHTML;
+  // }
+  if(allowDelete) {
+    // add an event to POST deletion data at change
+    changeHandler = function(rowData, $element) {
+      // rowData: the record corresponding to the clicked row, 
+      // $element: the tr element.
+      $.post( {
+        url: "serverApplication.php",  //server script to process data
+        data: {rowData:rowData},
+        callback: function() {
+          console.log("sucessfull post of table data");
+        }.bind($elemeDatant),
+        cache: false
+      }).done(function() {
+        $.get({
+          url: "serverApplication.php",  //server script to process data
+          requestData: "tableData",
+          tablename: bootstrapTable.name,
+          rowData:rowData,
+          cache: false
+        })
 
-    if(allowEdit) {
-        // add an event to POST data at change
-        // and then get data, to update the field at the viewer's side.
-    }
+        let tds = $element.getElementsByTagName('td');
+        for(i in tds) {
+          tds[i].innerHTML = "1";
+        }
+      }.bind(htmlRow));
+    };
+    // and then get data, to update the field at the viewer's side.
+  }
 
-    bootstrapTable.bootstrapTable({
-        onClickRow: changeHandler
-    });
-    
+  if(allowEdit) {
+    // add an event to POST data at change
+    // and then get data, to update the field at the viewer's side.
+  }
+
+  bootstrapTable.bootstrapTable({
+    onClickRow: changeHandler
+  });
+
 }
 
 function appendTable(container, tableName) {
@@ -122,6 +122,7 @@ function appendTable(container, tableName) {
             jsonToHtmlTable(data, container);
         }
     ).done();
+
 }
 
 

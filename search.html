@@ -1,61 +1,70 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>Spacious</title>
-    <link rel="icon" href="icon-spacious.png">
-    <link href="css/main.css" rel="stylesheet">    
-    <link rel="stylesheet" type="text/css" href="css/jscanvasMenu.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
-        
-    <script type="text/javascript" src="libraries/jquery-3.1.1.js"></script>
-    <script type="text/javascript" src="libraries/bootstrap.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<title>Spacious</title>
+	<link rel="icon" href="icon-spacious.png">
+	<link href="css/main.css" rel="stylesheet">    
+	<link rel="stylesheet" type="text/css" href="css/jscanvasMenu.css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
 
-    <!--script type="text/javascript" src="js/spacious.js"></script!-->    
+	<script type="text/javascript" src="libraries/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="libraries/bootstrap.js"></script>
 
-    <script type="text/javascript" src="js/spacious.js"></script>    
-
-    <!--<script type="text/javascript" src="js_libraries/Creator.js"></script>        -->
+	<script type="text/javascript" src="js/spacious.js"></script>    
 </head>
 <body>
-    <div class="jumbotron" style="background-color:#5691ef">
-        <h1> Spacious </h1>
-        <p style="margin-left:40px">We have space...</p>
-    </div> 
-    <div id="wrapper">
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                    <li>
-                        <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
-                    </li>
-                    <li>
-                        <a href="search.html"><i class="fa fa-routes fa-fw"></i> Search routes</a>
-                    </li>
-                    <li>
-                        <a href="stelar.html"><i class="fa fa-stelar fa-fw"></i> Stelar view</a>
-                    </li>
-                    <li>
-                        <a href="about.html"><i class="fa fa-about fa-fw"></i> About</a>
-                    </li>
-                    <li>
-                        <a href="contact.html"><i class="fa fa-contact fa-fw"></i> Contact Us!</a>
-                    </li>
-                    <li>
-                        <a href="contact.html"><i class="fa fa-contact fa-fw"></i> I am admin</a>
-                    </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>           
+	<div class="jumbotron" style="background-color:#5691ef">
+		<h1> Spacious </h1>
+		<p style="margin-left:40px">We have space...</p>
+	</div> 
+	<div id="wrapper">
+		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+			<div class="navbar-default sidebar" role="navigation">
+				<div class="sidebar-nav navbar-collapse">
+					<ul class="nav" id="side-menu">
+						<li>
+							<a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+						</li>
+						<li>
+							<a href="search.html"><i class="fa fa-routes fa-fw"></i> Search routes</a>
+						</li>
+						<li>
+							<a href="stelar.html"><i class="fa fa-stelar fa-fw"></i> Stelar view</a>
+						</li>
+						<li>
+							<a href="about.html"><i class="fa fa-about fa-fw"></i> About</a>
+						</li>
+						<li>
+							<a href="contact.html"><i class="fa fa-contact fa-fw"></i> Contact Us!</a>
+						</li>
+						<li>
+							<a href="contact.html"><i class="fa fa-contact fa-fw"></i> I am admin</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>           
 
-        <div id="page-wrapper">
-            <!--Drop down menu to select array -->
+		<div id="page-wrapper">
+			<!--Drop down menu to select array -->
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+					Select Data from routes
+					<span class="caret"></span>
+				</button>
+				<ul id="TableDropDownMenu1" class="dropdown-menu" aria-labelledby="dropdownMenu3">
+					<li><a href="#">data table 1</a></li>
+					<li><a href="#">data table 2</a></li>
+					<li><a href="#">data table 3</a></li>
+					<li role="separator" class="divider"></li>
+					<li><a href="#">query 1</a></li>
+				</ul>
+			</div>
 
-
+<<<<<<< HEAD
             <div class="dropdown">
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                     Select Data from routes
@@ -136,4 +145,20 @@
         
         </div>
     </div>      
+=======
+		</div>
 
+	</div>
+	<script type="text/javascript">
+/* request for table names */
+fetchTableNames();
+
+
+	</script>
+	<div id="page-wrapper">
+>>>>>>> 1431447904aeb993f0c3c281ad59d342a4e6fa2b
+
+	</div>
+	</div>      
+</body>
+</html>
