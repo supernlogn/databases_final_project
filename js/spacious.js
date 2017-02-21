@@ -1,49 +1,53 @@
 // add an event to POST deletion data at change
 $changeHandler = function($element) {
+    console.log("Executing changeHandler");
     // rowData: the record corresponding to the clicked row, 
     // $element: the tr element.
 
-    // dont fire the previous wait if you were waiting
-    clearTimeout($.data(this, 'timer'));
-    var wait = setTimeout(sendDataToServer.bind($element.parentElement), 500); // delay after user types
-    $(this).data('timer', wait);
+  
     // TODO
     var sendDataToServer = function ($element) {
         var rowData = [];
         for(let td of $element.children) {
-            rowData.append(td.innerHTML);
+            rowData.push(td.innerHTML);
         }
         rowData.shift(); // remove rowdata
 
         $.post( {
-        url: "serverApplication.php",  //server script to process data
-        data: {rowData:rowData},
-        success: function() {
-            console.log("sucessfull post of table data");
-        }.bind($element),
-        cache: false
-        }).done(function() {
-            $.get({
-                url: "serverApplication.php",  //server script to process data
-                data: {requestData: "tableData",
-                tableName: $element.name,
-                rowData:rowData},
-                success: function(data) {
-                    let tds = $element.getElementsByTagName('td');
-                    console.log(data) // for debug reasons
-                    for(i in tds) {
-                        tds[i].innerHTML = "1";
-                    }
-                },
-                cache: false
-            });
-
-        }.bind($element));
-    }
-};
-// and then get data, to update the field at the viewer's side.
-
-
+            url: "serverApplication.php",  //server script to process data
+            data: { tableName: $element.name,
+                    rowData: rowData},
+            success: function($element) {
+                console.log("sucessfull post of table data");
+                $.get({ 
+                    url: "serverApplication.php",  //server script to process data
+                    data: {requestData: "tableData",
+                    tableName: $element.name,
+                    rowData:rowData},
+                    success: function(data) {
+                        let tds = this.getElementsByTagName('td');
+                        console.log(data) // for debug reasons
+                        let k;
+                        for(k = 0; k < length(data.tableData); ++k ) {
+                            if(k == $element.firstChild.innerHTML) {
+                                break;
+                            }
+                        }
+                        for(i in tds) {
+                            tds[i].innerHTML = "1";
+                        }
+                    }.bind($element),
+                    cache: false
+                });            
+            }.bind(null, $element),
+            cache: false
+        }).done();
+    }.bind(null, $element);
+  // dont fire the previous wait if you were waiting
+    clearTimeout($.data(this, 'timer'));
+    var wait = setTimeout(sendDataToServer.bind($element.parentElement), 500); // delay after user types
+    $(this).data('timer', wait);    
+}
 
 /**
  * 
@@ -116,8 +120,9 @@ function jsonToHtmlTable(jsonString, container) {
         for(let val in element) {
             let td = document.createElement('td');
             td.contentEditable=true;
+            td.onkeyup = $changeHandler.bind(td, tr);
             // td.attributes.contenteditable = true;
-            td.onchange
+            // td.onchange
             td.draggable = true;
             td.innerHTML = element[val];
             tr.appendChild(td);
@@ -135,22 +140,22 @@ function jsonToHtmlTable(jsonString, container) {
 
 function appendTable(container, tableName) {
     console.log("called");
-    $.get(
-        "serverApplication.php",
-        {tableName : tableName},
-        function(data) {
+    $.get({
+        url: "serverApplication.php",
+        data: {tableName : tableName},
+        success: function(data) {
             jsonToHtmlTable(data, container);
         }
-    ).done();
+    }).done();
 
 }
 
 
 function fetchTableNames() {
-    $.get(
-        "serverApplication.php",  //server script to process data
-        {tableName: "tableNames"},
-        function(stringData) {
+    $.get({
+        url: "serverApplication.php",  //server script to process data
+        data: {tableName: "tableNames"},
+        success:function(stringData) {
             let tableDropDownMenu = document.getElementById("TableDropDownMenu1");
             console.log("this is data:" + stringData);
             let data = JSON.parse(stringData);
@@ -161,5 +166,6 @@ function fetchTableNames() {
                 tableDropDownMenu.appendChild(li);
             }
         }
-    );
+    });
 }
+
