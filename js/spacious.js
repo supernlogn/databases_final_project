@@ -1,3 +1,50 @@
+// add an event to POST deletion data at change
+$changeHandler = function($element) {
+    // rowData: the record corresponding to the clicked row, 
+    // $element: the tr element.
+
+    // dont fire the previous wait if you were waiting
+    clearTimeout($.data(this, 'timer'));
+    var wait = setTimeout(sendDataToServer.bind($element.parentElement), 500); // delay after user types
+    $(this).data('timer', wait);
+    // TODO
+    var sendDataToServer = function ($element) {
+        var rowData = [];
+        for(let td of $element.children) {
+            rowData.append(td.innerHTML);
+        }
+        rowData.shift(); // remove rowdata
+
+        $.post( {
+        url: "serverApplication.php",  //server script to process data
+        data: {rowData:rowData},
+        success: function() {
+            console.log("sucessfull post of table data");
+        }.bind($element),
+        cache: false
+        }).done(function() {
+            $.get({
+                url: "serverApplication.php",  //server script to process data
+                data: {requestData: "tableData",
+                tableName: $element.name,
+                rowData:rowData},
+                success: function(data) {
+                    let tds = $element.getElementsByTagName('td');
+                    console.log(data) // for debug reasons
+                    for(i in tds) {
+                        tds[i].innerHTML = "1";
+                    }
+                },
+                cache: false
+            });
+
+        }.bind($element));
+    }
+};
+// and then get data, to update the field at the viewer's side.
+
+
+
 /**
  * 
  * 
@@ -6,11 +53,11 @@
  * @param {HtmlElement} container an html container where this table will
  *                      be contained.
  */
+var objectRows;
 function jsonToHtmlTable(jsonString, container) {
 
-<<<<<<< HEAD
     let jsonObject = JSON.parse(jsonString);
-    let objectRows = jsonObject.tableData;
+    objectRows = jsonObject.tableData;
 
     let el = objectRows[0];
 
@@ -18,6 +65,7 @@ function jsonToHtmlTable(jsonString, container) {
         htmlTableWrapper.className = "table-responsive";
 
     let htmlTable = document.createElement('table');
+        htmlTable.id = 'table_' + jsonObject.tableName;
         htmlTable.className = "table table-bordered table-hover table-striped";
         htmlTableWrapper.appendChild(htmlTable);
 
@@ -26,24 +74,39 @@ function jsonToHtmlTable(jsonString, container) {
         titleThead.appendChild(headerTr);
         htmlTable.appendChild(titleThead);
     let th;
-    
+
     th = document.createElement('th');
     th.innerHTML = '#';
     headerTr.appendChild(th);
-
+    let i = 0;
     for(let property in el) {
         th = document.createElement('th');
-        th.innerHTML = '' + property;
+        th["data-field"] = property;
+        // th["data-index"] = i;
+        th.data_field = property;
+        console.log(property);
+        console.log(th);
+        console.log(th["data-field"]);
+        th.innerHTML = property;
         headerTr.appendChild(th);
     }
     console.log(headerTr.innerHTML);
+    console.log(objectRows);
 
+    // $(function() {
+    //     $('#' + htmlTable.id).bootstrapTable({
+    //         data: objectRows
+    //     });
+    //     console.log(objectRows);
+    // });
     let body = document.createElement('tbody');
     htmlTable.appendChild(body);
     
     i = 0;
+    let tr;
     for(let element of objectRows) {
-        let tr = document.createElement('tr');
+        tr = document.createElement('tr');
+        tr.name = jsonObject.tableName;
         body.appendChild(tr);
         console.log(element)
         th = document.createElement('th');
@@ -52,12 +115,15 @@ function jsonToHtmlTable(jsonString, container) {
         tr.appendChild(th);
         for(let val in element) {
             let td = document.createElement('td');
+            td.contentEditable=true;
+            // td.attributes.contenteditable = true;
+            td.onchange
+            td.draggable = true;
             td.innerHTML = element[val];
             tr.appendChild(td);
         }
         // tr.innerHTML = trInnerHTML.join('');
    }
-
 
     let divWrapper  = document.createElement('div');
         divWrapper.class="col-lg-4";
@@ -65,52 +131,6 @@ function jsonToHtmlTable(jsonString, container) {
 
         divWrapper.name = jsonObject.tableName;
         container.appendChild(divWrapper);
-}
-
-function addEventsToRow(bootstrapTable, allowDelete, allowEdit) {
-  // let tds = htmlRow.getElementsByTagName('td');
-  // for( td in tds) {
-  //     tds[td] = tds[td].innerHTML;
-  // }
-  if(allowDelete) {
-    // add an event to POST deletion data at change
-    changeHandler = function(rowData, $element) {
-      // rowData: the record corresponding to the clicked row, 
-      // $element: the tr element.
-      $.post( {
-        url: "serverApplication.php",  //server script to process data
-        data: {rowData:rowData},
-        callback: function() {
-          console.log("sucessfull post of table data");
-        }.bind($elemeDatant),
-        cache: false
-      }).done(function() {
-        $.get({
-          url: "serverApplication.php",  //server script to process data
-          requestData: "tableData",
-          tablename: bootstrapTable.name,
-          rowData:rowData,
-          cache: false
-        })
-
-        let tds = $element.getElementsByTagName('td');
-        for(i in tds) {
-          tds[i].innerHTML = "1";
-        }
-      }.bind(htmlRow));
-    };
-    // and then get data, to update the field at the viewer's side.
-  }
-
-  if(allowEdit) {
-    // add an event to POST data at change
-    // and then get data, to update the field at the viewer's side.
-  }
-
-  bootstrapTable.bootstrapTable({
-    onClickRow: changeHandler
-  });
-
 }
 
 function appendTable(container, tableName) {

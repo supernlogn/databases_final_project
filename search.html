@@ -5,13 +5,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 	<title>Spacious</title>
 	<link rel="icon" href="icon-spacious.png">
-	<link href="css/main.css" rel="stylesheet">    
-	<link rel="stylesheet" type="text/css" href="css/jscanvasMenu.css" media="screen" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
-
-	<script type="text/javascript" src="libraries/jquery-3.1.1.js"></script>
-	<script type="text/javascript" src="libraries/bootstrap.js"></script>
+	<link href="css/main.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 
 	<script type="text/javascript" src="js/spacious.js"></script>    
 </head>
@@ -19,7 +19,7 @@
 	<div class="jumbotron" style="background-color:#5691ef">
 		<h1> Spacious </h1>
 		<p style="margin-left:40px">We have space...</p>
-	</div> 
+	</div>
 	<div id="wrapper">
 		<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
 			<div class="navbar-default sidebar" role="navigation">
@@ -63,20 +63,6 @@
 					<li><a href="#">query 1</a></li>
 				</ul>
 			</div>
-
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    Select Data from routes
-                    <span class="caret"></span>
-                </button>
-                <ul id="TableDropDownMenu1" class="dropdown-menu" aria-labelledby="dropdownMenu3">
-                    <li><a href="#">data table 1</a></li>
-                    <li><a href="#">data table 2</a></li>
-                    <li><a href="#">data table 3</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">query 1</a></li>
-                </ul>
-            </div>
                     <table class="table">
                         <thead>
                             <tr>
@@ -115,7 +101,7 @@
         // fetchTableNames();
         /* example appending a table*/
         // call with data taken from server
-        appendTable(document.getElementById("page-wrapper"), "example");
+        // appendTable(document.getElementById("page-wrapper"), "example");
         // directly call
         jsonString = JSON.stringify({
             "tableName": "Example-Table",
@@ -138,7 +124,7 @@
 
 
         // example for fetching table names
-        fetchTableNames();
+        // fetchTableNames();
     </script>
         <div id="page-wrapper">
         
