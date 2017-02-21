@@ -30,7 +30,6 @@
 		die("Connection failed: ".$conn->connect_error);
 	}
 
-	// Only questions without arguments like this:
 	$qid= intval($_GET['qid']);
 	if ($qid != 6 && $qid != 8) {
 		$sql_query= "call q".$qid."()";
@@ -38,9 +37,21 @@
 		$args= $_GET['args'];
 		$sql_query= sprintf("call q%s(%s)", $qid, $args);
 	}
-		debug_to_console($sql_query);
+		//debug_to_console($sql_query);
 
 	$result= $conn->query($sql_query);
+
+	/*	$tableNames= array();
+	if ($result->num_rows > 0){
+		while($row= $result->fetch_row()){
+			array_push($tableNames, $row[0]);
+		}
+	}
+	mysqli_close($conn);
+	$tableNamesStr= json_encode($tableNames);
+	$tableNamesSuper= array("tableName"=>"tableNames", "tableData"=>$tableNamesStr);
+	echo json_encode($tableNamesSuper, JSON_FORCE_OBJECT);
+	*/
 
 	if ($result->num_rows > 0){
 		echo "<table>";
@@ -63,7 +74,7 @@
 	} else {
 		echo "0 results";
 	}
-	mysqli_close($con);
+	mysqli_close($conn);
 ?>
 </body>
 </html>
