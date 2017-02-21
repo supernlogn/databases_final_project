@@ -21,6 +21,9 @@
 
 	<script type="text/javascript" src="js/spacious.js"></script>    
 	<script type="text/javascript" src="js/db_answer_question.js"></script>    
+	<script>
+		$(document).ready(function() {fetchPlanetNames_asOptions();} );
+	</script>
 </head>
 <body>
 	<div class="jumbotron" style="background-color:#5691ef">
@@ -116,10 +119,12 @@
 				Αν είμαι τουρίστας σε έναν πλανήτη, ποια πτήση μπορεί να με ξεναγήσει σε όλους τους σταθμούς;
 
 				<form>
-					<select class="btn btn-primary dropdown-toggle" name="planet" id="q8_dropdown_planet" data-toggle="dropdown">
-						<option value="1"> 1 </option>
-						<option value="2"> 2 </option>
-				</select>	
+					<select class="btn btn-primary dropdown-toggle" name="planet" id="q8_dropdown_planet" data-toggle="dropdown"
+						onclick="">
+						<option selected disabled>Choose Planet</option>
+						<div id="planet-dropdown-options">
+						</div>
+					</select>	
 				</form>
 			</p>
 			<p class="db-question-st">

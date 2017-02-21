@@ -3,17 +3,17 @@
 <html>
 <head>
 <style>
-table {
-		width: 100%;
-		border-collapse: collapse;
-}
+	table {
+			width: 100%;
+			border-collapse: collapse;
+	}
 
-table, td, th {
-		border: 1px solid black;
-		padding: 5px;
-}
+	table, td, th {
+			border: 1px solid black;
+			padding: 5px;
+	}
 
-th {text-align: left;}
+	th {text-align: left;}
 </style>
 </head>
 <body>
@@ -52,8 +52,7 @@ if ($result->num_rows > 0){
 	echo "0 results";
 }
 
-/*
-mysqli_close($con);*/
+mysqli_close($con);
 ?>
 </body>
 </html>

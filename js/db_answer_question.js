@@ -33,3 +33,14 @@ function answerQuestion(qid,args=""){
     }
   });
 }
+
+function fetchPlanetNames_asOptions(){
+  $.get({
+    url: "php/fetchPlanetNames_asOptions.php",
+    success: function(a1,a2,resp) {
+      if(resp.readyState==4 && resp.status==200) {
+        document.getElementById("planet-dropdown-options").innerHTML= resp.responseText;
+      }
+    }
+  });
+}
