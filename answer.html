@@ -65,70 +65,86 @@
 			<p class="db-question-st">
 				Ποιες είναι οι τιμές των ταξιδιών στους πιο επικίνδυνους διαστημικούς προορισμούς (που είναι τοξικοί,
 				ραδιενεργοί, υπερβολικά θερμοί ή με υψηλή πίεση);
-
-				<div id="q1-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(1)">
 					Ask!
 				</button>
+				<div id="q1-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Ποιον προορισμό προτιμούν οι γυναίκες;
-
-				<div id="q2-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(2)">
 					Ask!
 				</button>
+				<div id="q2-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Πόσοι άνθρωποι μπορούν να εγκαταλείψουν τη γη σήμερα;
-
-				<div id="q3-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(3)">
 					Ask!
 				</button>
+				<div id="q3-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Ποιος είναι ο πιο trending πλανήτης για όλους μας τους επιβάτες;
-
-				<div id="q4-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(4)">
 					Ask!
 				</button>
+				<div id="q4-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Ποια εταιρία απασχολεί το περισσότερο προσωπικό;
-
-				<div id="q5-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(5)">
 					Ask!
 				</button>
+				<div id="q5-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Ποιος είναι ο μέγιστος όγκος φορτίου που μπορεί να μεταφερθεί από το ένα μέρος στο άλλο σε συγκεκριμένο χρονικό
 				πλαίσιο;
+				<br>
+				<form onsubmit="answerQuestion(6,[this[0].value,this[1].value,this[2].value,this[3].value])">
+					<input type="number" name="startStation">
+					<input type="number" name="endStation">
+					<input type="date" name="startDate">
+					<input type="date" name="endDate">
+					<br>
+					<input type="submit" value="Ask!" class="btn btn-primary">
+				</form>
+				<div id="q6-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Σε ποιο σταθμό συμφέρει να ανοίξουμε μια καφετέρια, για να έχουμε τη μεγαλύτερη κίνηση;
-
-				<div id="q7-ans"></div>
+				<br>
 				<button class="btn btn-primary" type="button" onclick="answerQuestion(7)">
 					Ask!
 				</button>
+				<div id="q7-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 				Αν είμαι τουρίστας σε έναν πλανήτη, ποια πτήση μπορεί να με ξεναγήσει σε όλους τους σταθμούς;
-
-				<form>
-					<select class="btn btn-primary dropdown-toggle" name="planet" id="q8_dropdown_planet" data-toggle="dropdown"
-						onclick="">
-						<option selected disabled>Choose Planet</option>
-						<div id="planet-dropdown-options">
-						</div>
-					</select>	
-				</form>
+				<br>
+				<select class="btn btn-primary dropdown-toggle" id="planet-dropdown" name="planet" id="q8_dropdown_planet" data-toggle="dropdown"
+					onclick="answerQuestion(8,this.value)">
+					<option selected disabled>Choose Planet</option>
+				</select>	
+				<div id="q8-ans"></div>
 			</p>
+			<hr>
 			<p class="db-question-st">
 			</p>
+			<hr>
 			<p class="db-question-st">
 			</p>
 		</div>
