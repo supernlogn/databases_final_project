@@ -1,5 +1,5 @@
 // https://www.w3schools.com/php/php_ajax_database.asp
-function answerQuestion(qid, args="") {
+/*function answerQuestion(qid, args="") {
   var eltId= "q" + qid + "-ans";
   if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -19,4 +19,17 @@ function answerQuestion(qid, args="") {
     return;
   }
   xmlhttp.send();
+}*/
+
+function answerQuestion(qid,args=""){
+  var eltId= "q" + qid + "-ans";
+  $.get({
+    url: "php/db_answer_question.php",
+    data: {qid: qid, args: args},
+    success: function(a1,a2,resp) {
+      if (resp.readyState==4 && resp.status==200) {
+        document.getElementById(eltId).innerHTML=resp.responseText;
+      }
+    }
+  });
 }
