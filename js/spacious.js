@@ -254,10 +254,13 @@ function fetchTableNames() {
             let data = JSON.parse(stringData);
             for(let tableName of data.tableData ) {
                 let li = document.createElement('li');
-                li.innerHTML = tableName;
-                li.onclick = appendTable.bind(document.getElementById("page-wrapper"), li.innerHTML); 
+                let a = document.createElement('a');
+                a.innerHTML = tableName;
+                li.appendChild(a);
+                li.onclick = appendTable.bind(null, document.getElementById("page-wrapper"), a.innerHTML); 
                 tableDropDownMenu.appendChild(li);
             }
         }
     });
 }
+
