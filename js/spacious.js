@@ -60,6 +60,7 @@ $changeHandler = function($rowElement) {
                     data: { tableName: $element.name,
                             rowData: rowData},
                     success: function(stringData) {
+                        let $element = this;
                         let data = JSON.parse(stringData);
                         let tds = this.getElementsByTagName('td');
                         console.log(data) // for debug reasons
@@ -78,7 +79,7 @@ $changeHandler = function($rowElement) {
                     }.bind(null, $element),
                     cache: false
                 });            
-            }.bind(null, $element),
+            }.bind($element),
             cache: false
         });
     }.bind(null, $rowElement);
