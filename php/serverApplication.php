@@ -10,7 +10,7 @@ function debug_to_console( $data ) {
 
 // Returns an bool array with 0/1 for each column
 function getPKcols($tableName, $conn){
-	$tableName= mysqli_escape_string($conn, $tableName);	// TODO ???
+	$tableName= mysqli_real_escape_string($conn, $tableName);	// TODO ???
 	$sql_query= "SELECT * FROM ".$tableName;
 	$result= $conn->query($sql_query);
 	if ($result->num_rows > 0){
@@ -19,10 +19,21 @@ function getPKcols($tableName, $conn){
 			$colFlags[$i]= $colFlags[$i] & 2;
 		}
 	}
+	//return $colFlags
+}
+function getColNames($tableName, $conn){
+	$tableName= mysqli_real_escape_string($conn, $tableName);
+	$sql_query= "SELECT * FROM ".$tableName;
+	$result= $conn->query($sql_query);
+	if ($result->num_rows > 0){
+		$colNames= $result->fetch_fields()->name;
+	}
+	return $colNames;
 }
 function sanitizeDBdata($rowData, $conn){
-	for ($i=0; $i< count($rowData); $i++) {
-		$rowData[i]= mysqli_escape_string($conn, $rowData[i]);
+	$rows= count($rowData);
+	for ($i= 0; $i < $rows; $i++) {
+		$rowData[$i]= mysqli_real_escape_string($conn, $rowData[$i]);
 	}
 	return $rowData;
 }
@@ -57,11 +68,32 @@ function getTableData($tableName, $conn) {
 }
 
 function postChange($tableName, $rowData, $conn){
-	$tableName= mysqli_escape_string($conn, $tableName);
-	$rowData= sanitizeDBdata($conn, $rowData);
-	return;
+	$tableName= mysqli_real_escape_string($conn, $tableName);
+	$rowData= sanitizeDBdata($rowData, $conn);
 
-	$sql_query= "REPLACE INTO ".$tableName." VALUES (".$rowData.")";
+	/*$sql_query= "REPLACE INTO ".$tableName." VALUES (";
+	$rows= count($rowData);
+	for($i= 0; $i < $rows; $i++) {
+		$sql_query= $sql_query.'"'.$rowData[$i].'",';
+	}
+	$sql_query= substr($sql_query,0,-1).')';*/
+	
+	$colNames= getColNames($tableName, $conn);
+	$pk= getPKcols($tableName, $conn);
+
+	$sql_query= "UPDATE ".$tableName." SET ";
+	// Append all column names and values
+	for($i= 0; $i < count($colNames); $i++){
+		$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+	}
+	$sql_query= substr($sql_query,0,-1)." WHERE ";
+
+	for($i= 0; $i < count($colNames); $i++){
+		if ($pk[$i] == 1) {
+			$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+		}
+	}
+
 	debug_to_console($sql_query);
 	//$result= $conn->query($sql_query);
 }
@@ -94,14 +126,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 	}
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	try {
+		$rowData= $_POST["rowData"];
+		$tableName= $_POST["tableName"];
 		echo "[post]";
 		//debug_to_console(htmlspecialchars($_POST["deletion"]));
+		//debug_to_console(htmlspecialchars($tableName));
+		//debug_to_console(htmlspecialchars($rowData[0]));
+		//debug_to_console(htmlspecialchars($rowData[1]));
 		echo "[post]";
 		if (htmlspecialchars($_POST["deletion"]) === 'true') {
-			postDeletion($_POST["tableName"], $_POST["rowData"], $conn);
+			//postDeletion($_POST["tableName"], $_POST["rowData"], $conn);
 			echo "Deleted";
 		} else {
-			postChange($_POST["tableName"], $_POST["rowData"], $conn);
+			postChange($tableName, $rowData, $conn);
 			echo "Changed";
 		}
 	} catch (Exception $e) {
