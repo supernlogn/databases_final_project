@@ -76,10 +76,10 @@ $changeHandler = function($rowElement) {
                             tds[i].innerHTML = rowData[j];
                             j++;
                         }
-                    }.bind(null, $element),
+                    }.bind($element),
                     cache: false
                 });            
-            }.bind($element),
+            }.bind(null, $element),
             cache: false
         });
     }.bind(null, $rowElement);
