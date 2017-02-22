@@ -41,7 +41,7 @@ function fetchPlanetNames_asOptions(){
     success: function(a1,a2,resp) {
       if(resp.readyState==4 && resp.status==200) {
         //document.getElementById("planet-dropdown").innerHTML= resp.responseText;
-        var d1= document.getElementById("planet-dropdown");
+        var d1= document.getElementById("q8_planet_dropdown");
         d1.insertAdjacentHTML("beforeend",resp.responseText);
       }
     }

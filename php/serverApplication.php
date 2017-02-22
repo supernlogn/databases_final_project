@@ -17,8 +17,8 @@ function getJSONTableNames() {
 	}
 	mysqli_close($conn);
 	$tableNamesStr= json_encode($tableNames);
-	$tableNamesSuper= array("tableName"=>"tableNames", "tableData"=>$tableNamesStr);
-	return json_encode($tableNamesSuper, JSON_FORCE_OBJECT);
+	$tableNamesSuper= array("tableName"=>"tableNames", "tableData"=>$tableNames);
+	return json_encode($tableNamesSuper);
 }
 function getJSONTableExample() {
     $allObjectsJSON = file_get_contents("example.json");
