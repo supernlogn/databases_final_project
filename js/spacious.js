@@ -48,7 +48,7 @@ $changeHandler = function($rowElement) {
         rowData.shift(); // remove rowdata #
         //TODO: Example
         $.post( {
-            url: "serverApplication.php",  //server script to process data
+            url: "php/serverApplication.php",  //server script to process data
             data: { tableName: $element.name,
                     rowData: rowData,
                     deletion: false
@@ -116,7 +116,7 @@ $deleteRowHandler = function($rowElement) {
         rowData.shift(); // remove rowdata #
         //TODO: Example
         $.post( {
-            url: "serverApplication.php",  //server script to process data
+            url: "php/serverApplication.php",  //server script to process data
             data: { tableName: $element.name,
                     rowData: rowData,
                     deletion: true
@@ -134,6 +134,58 @@ $deleteRowHandler = function($rowElement) {
     clearTimeout($.data(this, 'timer'));
     var wait = setTimeout(sendDataRemovalToServer, 500); // delay after user types
     $(this).data('timer', wait);      
+}
+
+function arrayToHtmlTableRow(tbody, dataArray, tableName, i, addInserBtn) {
+    let tr = document.createElement('tr');
+    tr.name = tableName;
+    tbody.appendChild(tr);
+    let th = document.createElement('th');
+    th.scope = "row";
+    th.innerHTML = i;
+    tr.appendChild(th);
+    for(let val in dataArray) {
+        let td = document.createElement('td');
+        td.contentEditable=true;
+        td.onkeyup = $changeHandler.bind(td, tr);
+        // td.attributes.contenteditable = true;
+        // td.onchange
+        td.draggable = true;
+        td.innerHTML = dataArray[val];
+        tr.appendChild(td);
+    }
+    let buttonTd = document.createElement('td');
+        tr.appendChild(buttonTd);
+    let deleteBtn = document.createElement('button');
+    deleteBtn.type = "button";
+    deleteBtn.innerHTML = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+    deleteBtn.className = "btn btn-danger";
+    deleteBtn.onclick = $deleteRowHandler.bind(null, tr);
+    buttonTd.appendChild(deleteBtn);
+    if(addInserBtn) {
+        let insertBtn = document.createElement('button');
+        insertBtn.type = "button";
+        insertBtn.innerHTML = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+        insertBtn.className = "btn btn-success";
+        insertBtn.onclick = function(tr, tbody, tableName) {
+                                let trs = tbody.getElementsByTagName('tr');
+                                let k;
+                                for(k = 0; trs[k].firstChild.innerHTML != tr.firstChild.innerHTML; ++k) {
+                                }
+                                let lineIndex = parseInt(trs[k].firstChild.innerHTML);
+                                // for(;k < trs.length; ++k) {
+                                //     trs[k].firstChild.innerHTML = parseInt(trs[k].firstChild.innerHTML) + 1;
+                                // }
+                                let emptyArray = [];
+                                for(k = 0; k < trs[0].childElementCount - 2; ++k) {
+                                    emptyArray.push("");
+                                }
+                                arrayToHtmlTableRow(tbody, emptyArray, tableName, trs.length, true);
+                                this.remove();
+                            }.bind(insertBtn, tr, tbody, tableName);
+        buttonTd.appendChild(insertBtn);
+    }
+    return tr;
 }
 /**
  * 
@@ -183,44 +235,18 @@ function jsonToHtmlTable(jsonString, container) {
     console.log(headerTr.innerHTML);
     console.log(objectRows);
 
-    // $(function() {
-    //     $('#' + htmlTable.id).bootstrapTable({
-    //         data: objectRows
-    //     });
-    //     console.log(objectRows);
-    // });
     let body = document.createElement('tbody');
     htmlTable.appendChild(body);
     
     i = 0;
     let tr;
     for(let element of objectRows) {
-        tr = document.createElement('tr');
-        tr.name = jsonObject.tableName;
-        body.appendChild(tr);
-        console.log(element)
-        th = document.createElement('th');
-        th.scope = "row";
-        th.innerHTML = i++;
-        tr.appendChild(th);
-        for(let val in element) {
-            let td = document.createElement('td');
-            td.contentEditable=true;
-            td.onkeyup = $changeHandler.bind(td, tr);
-            // td.attributes.contenteditable = true;
-            // td.onchange
-            td.draggable = true;
-            td.innerHTML = element[val];
-            tr.appendChild(td);
+        if(i == objectRows.length - 1) {
+            tr = arrayToHtmlTableRow(body, element, jsonObject.tableName, i++, true); 
         }
-        let deleteTd = document.createElement('td');
-            tr.appendChild(deleteTd);
-        let deleteBtn = document.createElement('button');
-        deleteBtn.type = "button";
-        deleteBtn.innerHTML = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-        deleteBtn.className = "btn btn-danger";
-        deleteBtn.onclick = $deleteRowHandler.bind(null, tr);
-        deleteTd.appendChild(deleteBtn);
+        else {
+            tr = arrayToHtmlTableRow(body, element, jsonObject.tableName, i++); 
+        }
         // tr.innerHTML = trInnerHTML.join('');
    }
 
@@ -235,7 +261,7 @@ function jsonToHtmlTable(jsonString, container) {
 function appendTable(container, tableName) {
     console.log("called");
     $.get({
-        url: "serverApplication.php",
+        url: "php/serverApplication.php",
         data: {tableName : tableName},
         success: function(data) {
             jsonToHtmlTable(data, container);
@@ -247,7 +273,7 @@ function appendTable(container, tableName) {
 
 function fetchTableNames() {
     $.get({
-        url: "serverApplication.php",  //server script to process data
+        url: "php/serverApplication.php",  //server script to process data
         data: {tableName: "tableNames"},
         success:function(stringData) {
             let tableDropDownMenu = document.getElementById("TableDropDownMenu1");
@@ -264,4 +290,3 @@ function fetchTableNames() {
         }
     });
 }
-
