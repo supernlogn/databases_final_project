@@ -13,20 +13,44 @@ function getPKcols($tableName, $conn){
 	$tableName= mysqli_real_escape_string($conn, $tableName);	// TODO ???
 	$sql_query= "SELECT * FROM ".$tableName;
 	$result= $conn->query($sql_query);
+	$colFlags= 1;
 	if ($result->num_rows > 0){
-		$colFlags= $result->fetch_fields()->flags;
+		$colFlags= $result->fetch_fields();
 		for($i= 0; $i<count($colFlags); $i++){
-			$colFlags[$i]= $colFlags[$i] & 2;
+			$colFlags[$i]= $colFlags[$i]->flags & 2;
 		}
+	} else {
+		echo "[pk]: Empty table!";
 	}
-	//return $colFlags
+	return $colFlags;
+}
+function getColTypes($tableName, $conn){
+	$tableName= mysqli_real_escape_string($conn, $tableName);	// TODO ???
+	$sql_query= "SELECT * FROM ".$tableName;
+	$result= $conn->query($sql_query);
+	$colTypes= 1;
+	if ($result->num_rows > 0){
+		$colTypes= $result->fetch_fields();
+		for($i= 0; $i<count($colTypes); $i++){
+			$colTypes[$i]= $colTypes[$i]->type;
+		}
+	} else {
+		echo "[pk]: Empty table!";
+	}
+	return $colFlags;
 }
 function getColNames($tableName, $conn){
 	$tableName= mysqli_real_escape_string($conn, $tableName);
 	$sql_query= "SELECT * FROM ".$tableName;
 	$result= $conn->query($sql_query);
+	$colNames= 1;
 	if ($result->num_rows > 0){
-		$colNames= $result->fetch_fields()->name;
+		$colNames= $result->fetch_fields();
+		for($i=0; $i < count($colNames); $i++) {
+			$colNames[$i]= $colNames[$i]->name;
+		}
+	} else {
+		echo "[colnames]: Empty table!";
 	}
 	return $colNames;
 }
@@ -70,34 +94,65 @@ function getTableData($tableName, $conn) {
 function postChange($tableName, $rowData, $conn){
 	$tableName= mysqli_real_escape_string($conn, $tableName);
 	$rowData= sanitizeDBdata($rowData, $conn);
-
-	/*$sql_query= "REPLACE INTO ".$tableName." VALUES (";
-	$rows= count($rowData);
-	for($i= 0; $i < $rows; $i++) {
-		$sql_query= $sql_query.'"'.$rowData[$i].'",';
-	}
-	$sql_query= substr($sql_query,0,-1).')';*/
-	
 	$colNames= getColNames($tableName, $conn);
 	$pk= getPKcols($tableName, $conn);
+	$colTypes= getColTypes($tableName, $conn);
 
+	/*echo 'Column names: ';
+	debug_to_console(implode('|',$colNames));
+	echo 'PK: ';
+	debug_to_console(implode('|',$pk));*/
+	
 	$sql_query= "UPDATE ".$tableName." SET ";
 	// Append all column names and values
 	for($i= 0; $i < count($colNames); $i++){
-		$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+		if ($pk[$i] == 0) {		// Only include if not part of key
+			if ($colTypes[$i] < 7){		// If it's arithmetic, no quotes
+				$sql_query= $sql_query.'`'.$colNames[$i].'`='.$rowData[$i].',';
+			} else {
+				$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+			}
+		}
 	}
 	$sql_query= substr($sql_query,0,-1)." WHERE ";
 
 	for($i= 0; $i < count($colNames); $i++){
-		if ($pk[$i] == 1) {
-			$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+		if ($pk[$i] != 0) {
+			if ($colTypes[$i] < 7){		// If it's arithmetic, no quotes
+				$sql_query= $sql_query.'`'.$colNames[$i].'`='.$rowData[$i].',';
+			} else {
+				$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+			}
 		}
 	}
+	$sql_query= substr($sql_query,0,-1);
 
 	debug_to_console($sql_query);
-	//$result= $conn->query($sql_query);
+	$result= $conn->query($sql_query);
+	echo 'Query run';
 }
 function postDeletion($tableName, $rowData, $conn){
+	$tableName= mysqli_real_escape_string($conn, $tableName);
+	$rowData= sanitizeDBdata($rowData, $conn);
+	$colNames= getColNames($tableName, $conn);
+	$pk= getPKcols($tableName, $conn);
+	$colTypes= getColTypes($tableName, $conn);
+
+	$sql_query= "DELETE FROM ".$tableName." WHERE ";
+	for($i= 0; $i < count($colNames); $i++){
+		if ($pk[$i] != 0) {
+			if ($colTypes[$i] < 7){		// If it's arithmetic, no quotes
+				$sql_query= $sql_query.'`'.$colNames[$i].'`='.$rowData[$i].',';
+			} else {
+				$sql_query= $sql_query.'`'.$colNames[$i].'`="'.$rowData[$i].'",';
+			}
+		}
+	}
+	$sql_query= substr($sql_query,0,-1);
+
+	debug_to_console($sql_query);
+	$result= $conn->query($sql_query);
+	echo 'Query run';
 }
 
 // END FUNCTIONS
@@ -135,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 		//debug_to_console(htmlspecialchars($rowData[1]));
 		echo "[post]";
 		if (htmlspecialchars($_POST["deletion"]) === 'true') {
-			//postDeletion($_POST["tableName"], $_POST["rowData"], $conn);
+			postDeletion($tableName, $rowData, $conn);
 			echo "Deleted";
 		} else {
 			postChange($tableName, $rowData, $conn);

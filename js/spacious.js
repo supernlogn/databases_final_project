@@ -51,10 +51,10 @@ $changeHandler = function($rowElement) {
         rowData: rowData,
         deletion: false
       },
-      success: function($element,a,b) {
+      success: function($element) {
         console.log("sucessfull post of table data");
         $.get({ 
-          url: "serverApplication.php",  //server script to process data
+          url: "php/serverApplication.php",  //server script to process data
           data: { tableName: $element.name,
             rowData: rowData},
             success: function(stringData) {
@@ -120,7 +120,7 @@ $deleteRowHandler = function($rowElement) {
         rowData: rowData,
         deletion: true
       },
-      success: function($element) {
+      success: function($element,a,b) {
         console.log("sucessfull deletion of table data");
         $rowElement.remove(); // remove html data
       }.bind(null, $element),
