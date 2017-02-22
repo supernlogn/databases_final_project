@@ -80,7 +80,7 @@ $changeHandler = function($rowElement) {
                 });            
             }.bind(null, $element),
             cache: false
-        }).done();
+        });
     }.bind(null, $rowElement);
 
   // dont fire the previous wait if you were waiting
