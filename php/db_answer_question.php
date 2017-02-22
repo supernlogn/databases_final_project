@@ -30,11 +30,11 @@
 		die("Connection failed: ".$conn->connect_error);
 	}
 
-	$qid= intval($_GET['qid']);
+	$qid= intval(htmlspecialchars($_GET['qid']));
 	if ($qid != 6 && $qid != 8) {
 		$sql_query= "call q".$qid."()";
 	} else {
-		$args= $_GET['args'];
+		$args= $_GET['args'];		// Data is assumed sanitized
 		$sql_query= sprintf("call q%s(%s)", $qid, $args);
 	}
 		//debug_to_console($sql_query);

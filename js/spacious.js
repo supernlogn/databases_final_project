@@ -51,7 +51,7 @@ $changeHandler = function($rowElement) {
         rowData: rowData,
         deletion: false
       },
-      success: function($element) {
+      success: function(a,b,c) {
         console.log("sucessfull post of table data");
         $.get({ 
           url: "php/serverApplication.php",  //server script to process data
@@ -77,7 +77,7 @@ $changeHandler = function($rowElement) {
         });            
       }.bind(null, $element),
       cache: false
-    }).done();
+    });
   }.bind(null, $rowElement);
 
   // dont fire the previous wait if you were waiting
