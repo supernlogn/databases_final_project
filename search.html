@@ -14,6 +14,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 
 	<script type="text/javascript" src="js/spacious.js"></script>    
+	<script>
+		$(document).ready(function() {fetchTableNames();} );
+	</script>
 </head>
 <body>
 	<div class="jumbotron" style="background-color:#5691ef">
@@ -30,6 +33,9 @@
 						</li>
 						<li>
 							<a href="search.html"><i class="fa fa-routes fa-fw"></i> Search routes</a>
+						</li>
+						<li>
+							<a href="answer.html"><i class="fa fa-answer fa-fw"></i> Answers to HOT Questions</a>
 						</li>
 						<li>
 							<a href="stelar.html"><i class="fa fa-stelar fa-fw"></i> Stelar view</a>
@@ -56,12 +62,12 @@
 					<span class="caret"></span>
 				</button>
 				<ul id="TableDropDownMenu1" class="dropdown-menu" aria-labelledby="dropdownMenu3">
-					<li><a href="#">data table 1</a></li>
-					<li><a href="#">data table 2</a></li>
-					<li><a href="#">data table 3</a></li>
-					<li role="separator" class="divider"></li>
-					<li><a href="#">query 1</a></li>
 				</ul>
+
+				<!--<select class="btn btn-primary dropdown-toggle" id="TableDropDownMenu1" data-toggle="dropdown"
+					onclick="">
+					<option selected disabled>Choose Table</option>
+				</select>-->	
 			</div>
         </div>
 

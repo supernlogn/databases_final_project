@@ -48,7 +48,7 @@ $changeHandler = function($rowElement) {
         rowData.shift(); // remove rowdata #
         //TODO: Example
         $.post( {
-            url: "serverApplication.php",  //server script to process data
+            url: "php/serverApplication.php",  //server script to process data
             data: { tableName: $element.name,
                     rowData: rowData,
                     deletion: false
@@ -56,7 +56,7 @@ $changeHandler = function($rowElement) {
             success: function($element) {
                 console.log("sucessfull post of table data");
                 $.get({ 
-                    url: "serverApplication.php",  //server script to process data
+                    url: "php/serverApplication.php",  //server script to process data
                     data: { tableName: $element.name,
                             rowData: rowData},
                     success: function(stringData) {
@@ -116,7 +116,7 @@ $deleteRowHandler = function($rowElement) {
         rowData.shift(); // remove rowdata #
         //TODO: Example
         $.post( {
-            url: "serverApplication.php",  //server script to process data
+            url: "php/serverApplication.php",  //server script to process data
             data: { tableName: $element.name,
                     rowData: rowData,
                     deletion: true
@@ -235,7 +235,7 @@ function jsonToHtmlTable(jsonString, container) {
 function appendTable(container, tableName) {
     console.log("called");
     $.get({
-        url: "serverApplication.php",
+        url: "php/serverApplication.php",
         data: {tableName : tableName},
         success: function(data) {
             jsonToHtmlTable(data, container);
@@ -244,10 +244,9 @@ function appendTable(container, tableName) {
 
 }
 
-
 function fetchTableNames() {
     $.get({
-        url: "serverApplication.php",  //server script to process data
+        url: "php/serverApplication.php",  //server script to process data
         data: {tableName: "tableNames"},
         success:function(stringData) {
             let tableDropDownMenu = document.getElementById("TableDropDownMenu1");
