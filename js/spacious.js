@@ -37,48 +37,50 @@ $changeHandler = function($rowElement) {
   console.log("Executing changeHandler");   
   // $rowElement: the tr element.
 
-  var sendDataToServer = function ($element) {
-    var rowData = [];
-    for(let td of $element.children) {
-      rowData.push(td.innerHTML);
-    }
-    rowData.pop(); // remove button
-    rowData.shift(); // remove rowdata #
-    //TODO: Example
-    $.post( {
-      url: "php/serverApplication.php",  //server script to process data
-      data: { tableName: $element.name,
-        rowData: rowData,
-        deletion: false
-      },
-      success: function(a,b,c) {
-        console.log("sucessfull post of table data");
-        $.get({ 
-          url: "php/serverApplication.php",  //server script to process data
-          data: { tableName: $element.name, rowData: rowData },
-          success: function(stringData) {
-            let data = JSON.parse(stringData);
-            let tds = this.getElementsByTagName('td');
-            console.log(data) // for debug reasons
-              let k;
-            for(k = 0; k < length(data.tableData); ++k ) {
-              if(k == $element.firstChild.innerHTML) {
-                break;
-              }
-            }
-            let rowData = data.tableData[k];
-            let j = 0;
-            for(i in tds) {
-              tds[i].innerHTML = rowData[j];
-              j++;
-            }
-          }.bind(null, $element),
-          cache: false
-        });            
-      }.bind(null, $element),
-      cache: false
-    });
-  }.bind(null, $rowElement);
+    var sendDataToServer = function ($element) {
+        var rowData = [];
+        for(let td of $element.children) {
+            rowData.push(td.innerHTML);
+        }
+        rowData.pop(); // remove button
+        rowData.shift(); // remove rowdata #
+        //TODO: Example
+        $.post( {
+            url: "php/serverApplication.php",  //server script to process data
+            data: { tableName: $element.name,
+                    rowData: rowData,
+                    deletion: false
+                  },
+            success: function($element) {
+                console.log("sucessfull post of table data");
+                $.get({ 
+                    url: "serverApplication.php",  //server script to process data
+                    data: { tableName: $element.name,
+                            rowData: rowData},
+                    success: function(stringData) {
+                        let $element = this;
+                        let data = JSON.parse(stringData);
+                        let tds = this.getElementsByTagName('td');
+                        console.log(data) // for debug reasons
+                        let k;
+                        for(k = 0; k < length(data.tableData); ++k ) {
+                            if(k == $element.firstChild.innerHTML) {
+                                break;
+                            }
+                        }
+                        let rowData = data.tableData[k];
+                        let j = 0;
+                        for(i in tds) {
+                            tds[i].innerHTML = rowData[j];
+                            j++;
+                        }
+                    }.bind($element),
+                    cache: false
+                });            
+            }.bind(null, $element),
+            cache: false
+        });
+    }.bind(null, $rowElement);
 
   // dont fire the previous wait if you were waiting
   clearTimeout($.data(this, 'timer'));
@@ -95,41 +97,94 @@ Example data sent by delete request
 */
 
 $deleteRowHandler = function($rowElement) {
-  console.log("deleteHandler");
-  //     var rowData = [];
-  //     for(let td of $rowElement.children) {
-  //         rowData.push(td.innerHTML);
-  //     }    
-  // console.log({ tableName: $rowElement.name,
-  //                 rowData: rowData,
-  //                 deletion: true
-  //             });
-  var sendDataRemovalToServer = function ($element) {
-    var rowData = [];
-    for(let td of $element.children) {
-      rowData.push(td.innerHTML);
-    }
-    rowData.pop(); // remove button
-    rowData.shift(); // remove rowdata #
-    //TODO: Example
-    $.post( {
-      url: "php/serverApplication.php",  //server script to process data
-      data: { tableName: $element.name,
-        rowData: rowData,
-        deletion: true
-      },
-      success: function($element) {
-        console.log("sucessfull deletion of table data");
-        $rowElement.remove(); // remove html data
-      }.bind(null, $element),
-      cache: false
-    }).done();
-  }.bind(null, $rowElement);
+    console.log("deleteHandler");
+    //     var rowData = [];
+    //     for(let td of $rowElement.children) {
+    //         rowData.push(td.innerHTML);
+    //     }    
+    // console.log({ tableName: $rowElement.name,
+    //                 rowData: rowData,
+    //                 deletion: true
+    //             });
+    var sendDataRemovalToServer = function ($element) {
+        var rowData = [];
+        for(let td of $element.children) {
+            rowData.push(td.innerHTML);
+        }
+        rowData.pop(); // remove button
+        rowData.shift(); // remove rowdata #
+        //TODO: Example
+        $.post( {
+            url: "php/serverApplication.php",  //server script to process data
+            data: { tableName: $element.name,
+                    rowData: rowData,
+                    deletion: true
+                },
+            success: function($element) {
+                console.log("sucessfull deletion of table data");
+                $rowElement.remove(); // remove html data
+            }.bind(null, $element),
+            cache: false
+        }).done();
+    }.bind(null, $rowElement);
+
 
   // dont fire the previous wait if you were waiting
   clearTimeout($.data(this, 'timer'));
   var wait = setTimeout(sendDataRemovalToServer, 500); // delay after user types
   $(this).data('timer', wait);      
+}
+
+function arrayToHtmlTableRow(tbody, dataArray, tableName, i, addInserBtn) {
+    let tr = document.createElement('tr');
+    tr.name = tableName;
+    tbody.appendChild(tr);
+    let th = document.createElement('th');
+    th.scope = "row";
+    th.innerHTML = i;
+    tr.appendChild(th);
+    for(let val in dataArray) {
+        let td = document.createElement('td');
+        td.contentEditable=true;
+        td.onkeyup = $changeHandler.bind(td, tr);
+        // td.attributes.contenteditable = true;
+        // td.onchange
+        td.draggable = true;
+        td.innerHTML = dataArray[val];
+        tr.appendChild(td);
+    }
+    let buttonTd = document.createElement('td');
+        tr.appendChild(buttonTd);
+    let deleteBtn = document.createElement('button');
+    deleteBtn.type = "button";
+    deleteBtn.innerHTML = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
+    deleteBtn.className = "btn btn-danger";
+    deleteBtn.onclick = $deleteRowHandler.bind(null, tr);
+    buttonTd.appendChild(deleteBtn);
+    if(addInserBtn) {
+        let insertBtn = document.createElement('button');
+        insertBtn.type = "button";
+        insertBtn.innerHTML = '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+        insertBtn.className = "btn btn-success";
+        insertBtn.onclick = function(tr, tbody, tableName) {
+                                let trs = tbody.getElementsByTagName('tr');
+                                let k;
+                                for(k = 0; trs[k].firstChild.innerHTML != tr.firstChild.innerHTML; ++k) {
+                                }
+                                let lineIndex = parseInt(trs[k].firstChild.innerHTML);
+                                // for(;k < trs.length; ++k) {
+                                //     trs[k].firstChild.innerHTML = parseInt(trs[k].firstChild.innerHTML) + 1;
+                                // }
+                                let emptyArray = [];
+                                for(k = 0; k < trs[0].childElementCount - 2; ++k) {
+                                    emptyArray.push("");
+                                }
+                                arrayToHtmlTableRow(tbody, emptyArray, tableName, trs.length, true);
+                                this.remove();
+                            }.bind(insertBtn, tr, tbody, tableName);
+        buttonTd.appendChild(insertBtn);
+    }
+    return tr;
 }
 /**
  * 
@@ -178,46 +233,20 @@ function jsonToHtmlTable(jsonString, container) {
   console.log(headerTr.innerHTML);
   console.log(objectRows);
 
-  // $(function() {
-  //     $('#' + htmlTable.id).bootstrapTable({
-  //         data: objectRows
-  //     });
-  //     console.log(objectRows);
-  // });
-  let body = document.createElement('tbody');
-  htmlTable.appendChild(body);
-
-  i = 0;
-  let tr;
-  for(let element of objectRows) {
-    tr = document.createElement('tr');
-    tr.name = jsonObject.tableName;
-    body.appendChild(tr);
-    console.log(element)
-      th = document.createElement('th');
-    th.scope = "row";
-    th.innerHTML = i++;
-    tr.appendChild(th);
-    for(let val in element) {
-      let td = document.createElement('td');
-      td.contentEditable=true;
-      td.onkeyup = $changeHandler.bind(td, tr);
-      // td.attributes.contenteditable = true;
-      // td.onchange
-      td.draggable = true;
-      td.innerHTML = element[val];
-      tr.appendChild(td);
-    }
-    let deleteTd = document.createElement('td');
-    tr.appendChild(deleteTd);
-    let deleteBtn = document.createElement('button');
-    deleteBtn.type = "button";
-    deleteBtn.innerHTML = '<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>';
-    deleteBtn.className = "btn btn-danger";
-    deleteBtn.onclick = $deleteRowHandler.bind(null, tr);
-    deleteTd.appendChild(deleteBtn);
-    // tr.innerHTML = trInnerHTML.join('');
-  }
+    let body = document.createElement('tbody');
+    htmlTable.appendChild(body);
+    
+    i = 0;
+    let tr;
+    for(let element of objectRows) {
+        if(i == objectRows.length - 1) {
+            tr = arrayToHtmlTableRow(body, element, jsonObject.tableName, i++, true); 
+        }
+        else {
+            tr = arrayToHtmlTableRow(body, element, jsonObject.tableName, i++); 
+        }
+        // tr.innerHTML = trInnerHTML.join('');
+   }
 
   let divWrapper  = document.createElement('div');
   divWrapper.class="col-lg-4";
@@ -228,14 +257,15 @@ function jsonToHtmlTable(jsonString, container) {
 }
 
 function appendTable(container, tableName) {
-  console.log("called");
-  $.get({
-    url: "php/serverApplication.php",
-    data: {tableName : tableName},
-    success: function(data) {
-      jsonToHtmlTable(data, container);
-    }
-  }).done();
+    console.log("called");
+    $.get({
+        url: "php/serverApplication.php",
+        data: {tableName : tableName},
+        success: function(data) {
+            jsonToHtmlTable(data, container);
+        }
+    }).done();
+
 }
 
 function fetchTableNames() {
